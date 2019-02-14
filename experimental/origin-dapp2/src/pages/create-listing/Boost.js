@@ -47,7 +47,10 @@ class Boost extends Component {
     const step = isFractional ? 4 : 3
 
     if (this.state.valid) {
-      return <Redirect to={`${prefix}/review`} push />
+      // return <Redirect to={`${prefix}/review`} push />
+
+      // Advance to next step
+      this.props.onNext()
     }
 
     return (
@@ -78,11 +81,9 @@ class Boost extends Component {
                 )}
 
                 <div className="actions">
-                  <Link
-                    className="btn btn-outline-primary"
-                    to={`${prefix}/${isFractional ? 'availability' : 'step-2'}`}
-                    children="Back"
-                  />
+                  <button className="btn btn-outline-primary" onClick={() => {this.props.onPrev()}} >
+                    Back
+                  </button>
                   <button type="submit" className="btn btn-primary">
                     Review
                   </button>

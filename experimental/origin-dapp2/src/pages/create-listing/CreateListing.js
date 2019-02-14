@@ -8,7 +8,7 @@ import PageTitle from 'components/PageTitle'
 import ForRentHousing from './listing-types/ForRentHousing'
 // import ForRentJewelry from './listing-types'
 
-// import Step1 from './Step1'
+import Step1 from './Step1'
 // import Step2 from './Step2'
 // import Boost from './Boost'
 // import Availability from './Availability'
@@ -73,69 +73,21 @@ class CreateListing extends Component {
         </div>
       )
     }
-    else {
+    else if (listingType.toLowerCase()=='new') {
       return (
         <div className="container create-listing">
           <PageTitle>Add a Listing</PageTitle>
-            <div>Hello</div>
             <Step1
               listing={this.state.listing}
               onChange={listing => {console.log(listing); this.setListing(listing)}}
             />
-
-          {/*
-          <Switch>
-            <Route
-              path="/create/step-2"
-              render={() => (
-                <Step2
-                  listing={this.state.listing}
-                  listingType={listingType}
-                  onChange={listing => this.setListing(listing)}
-                />
-              )}
-            />
-            <Route
-              path="/create/boost"
-              render={() => (
-                <Boost
-                  listing={this.state.listing}
-                  listingType={listingType}
-                  tokenBalance={this.props.tokenBalance}
-                  onChange={listing => this.setListing(listing)}
-                />
-              )}
-            />
-            <Route
-              path="/create/review"
-              render={() => (
-                <Review
-                  tokenBalance={this.props.tokenBalance}
-                  listingType={listingType}
-                  listing={this.state.listing}
-                />
-              )}
-            />
-            <Route
-              path="/create/availability"
-              render={() => (
-                <Availability
-                  tokenBalance={this.props.tokenBalance}
-                  listing={this.state.listing}
-                  onChange={listing => this.setListing(listing)}
-                />
-              )}
-            />
-            <Route
-              render={() => (
-                <Step1
-                  listing={this.state.listing}
-                  onChange={listing => this.setListing(listing)}
-                />
-              )}
-            />
-          </Switch>
-        */}
+        </div>
+      )
+    }
+    else {
+      return (
+        <div className="container create-listing">
+          <div>Unkown listing type of "<code>{listingType}</code>". Something went wrong :(</div>
         </div>
       )
     }

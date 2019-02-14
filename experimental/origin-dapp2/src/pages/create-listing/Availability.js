@@ -31,9 +31,9 @@ class Availability extends Component {
     const isEdit = this.props.mode === 'edit'
     const prefix = isEdit ? `/listings/${this.props.listingId}/edit` : '/create'
 
-    if (this.state.valid) {
-      return <Redirect to={`${prefix}/boost`} push />
-    }
+    // if (this.state.valid) {
+    //   return <Redirect to={`${prefix}/boost`} push />
+    // }
 
     return (
       <div className="row">
@@ -44,7 +44,7 @@ class Availability extends Component {
               <div className="step-description">
                 Edit availability &amp; Pricing
               </div>
-              <Steps steps={4} step={3} />
+              <Steps steps={this.props.steps} step={this.props.step} />
 
               <form
                 onSubmit={e => {
@@ -69,7 +69,7 @@ class Availability extends Component {
                   <button className="btn btn-outline-primary" onClick={() => {this.props.onPrev()}}>
                     Back
                   </button>
-                  <button type="submit" className="btn btn-primary">
+                  <button className="btn btn-primary" onClick={() => {this.props.onNext()}}>
                     Continue
                   </button>
                 </div>

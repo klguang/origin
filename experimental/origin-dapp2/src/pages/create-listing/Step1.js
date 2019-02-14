@@ -17,13 +17,25 @@ class Step1 extends Component {
   render() {
     const isEdit = this.props.mode === 'edit'
     if (this.state.valid) {
-      if (isEdit) {
-        return (
-          <Redirect to={`/listings/${this.props.listingId}/edit/step-2`} push />
-        )
-      } else {
-        return <Redirect to="/create/step-2" push />
-      }
+
+      // TODO: This is HACK to get a new ListingType from old-school category+subcategory.
+      // It strips off lieading "schema"
+      const listingType = (
+        this.state.category.slice("schema".length+1) +
+        this.state.subCategory.slice("schema".length+1)
+      )
+
+      return (
+        <Redirect to={listingType} push />
+      )
+
+      // if (isEdit) {
+      //   return (
+      //     <Redirect to={`/listings/${this.props.listingId}/edit/step-2`} push />
+      //   )
+      // } else {
+      //   return <Redirect to="/create/step-2" push />
+      // }
     }
 
     const input = formInput(this.state, state => this.setState(state))

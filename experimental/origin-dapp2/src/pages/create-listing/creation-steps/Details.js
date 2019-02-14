@@ -6,9 +6,8 @@ import Redirect from 'components/Redirect'
 import Link from 'components/Link'
 import Wallet from 'components/Wallet'
 import ImagePicker from 'components/ImagePicker'
-
-import UnitListing from '../listing-types/Unit'
 import HomeShareListing from '../listing-types/HomeShare'
+import Price from 'components/Price'
 
 import { formInput, formFeedback } from 'utils/formHelpers'
 
@@ -34,10 +33,10 @@ class Details extends Component {
         : '/create'
 
 
-    if (this.state.valid) {
-      // Go to next step if we're done
-      this.props.onNext()
-    }
+    // if (this.state.valid) {
+    //   // Go to next step if we're done
+    //   this.props.onNext()
+    // }
 
     const input = formInput(this.state, state => this.setState(state))
     const Feedback = formFeedback(this.state)
@@ -49,7 +48,7 @@ class Details extends Component {
             <div className="wrap">
               <div className="step">Step 2</div>
               <div className="step-description">Provide listing details</div>
-              <Steps steps={4} step={2} />
+              <Steps steps={this.props.steps} step={this.props.step} />
 
               <form
                 onSubmit={e => {
@@ -90,6 +89,63 @@ class Details extends Component {
                   onChange={state => this.setState(state)}
                 />
 */}
+
+
+{/* homeshare specific code */}
+
+                <div className="form-group">
+                  <label>Default Weekday Pricing (Sunday - Thursday nights)</label>
+                  <div className="d-flex">
+                    <div style={{ flex: 1, marginRight: '1rem' }}>
+                      <div className="with-symbol">
+                        <input {...input('price')} />
+                        <span className="eth">ETH</span>
+                      </div>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div className="with-symbol corner">
+                        <Price
+                          el="input"
+                          amount={this.state.price}
+                          className="form-control form-control-lg"
+                        />
+                        <span className="usd">USD</span>
+                      </div>
+                    </div>
+                  </div>
+                  {Feedback('price')}
+                  <div className="help-text price">
+                    Price is always in ETH, USD is an estimate.
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label>Default Weekend Pricing (Friday &amp; Saturday nights)</label>
+                  <div className="d-flex">
+                    <div style={{ flex: 1, marginRight: '1rem' }}>
+                      <div className="with-symbol">
+                        <input {...input('weekendPrice')} />
+                        <span className="eth">ETH</span>
+                      </div>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div className="with-symbol corner">
+                        <Price
+                          el="input"
+                          amount={this.state.weekendPrice}
+                          className="form-control form-control-lg"
+                        />
+                        <span className="usd">USD</span>
+                      </div>
+                    </div>
+                  </div>
+                  {Feedback('weekendPrice')}
+                </div>
+
+
+{/* END homeshare specific code */}
+
+
+
                 <div className="form-group">
                   <label>Add Photos</label>
                   <ImagePicker
@@ -101,9 +157,9 @@ class Details extends Component {
                 </div>
 
                 <div className="actions">
-                  <Link className="btn btn-outline-primary" to={prefix}>
+                  <button className="btn btn-outline-primary" onClick={() => {this.props.onPrev()}}>
                     Back
-                  </Link>
+                  </button>
                   <button type="submit" className="btn btn-primary">
                     Continue
                   </button>
@@ -154,6 +210,7 @@ class Details extends Component {
       window.scrollTo(0, 0)
     } else if (this.props.onChange) {
       this.props.onChange(pick(this.state, this.state.fields))
+      this.props.onNext() // Advance to next step
     }
     this.setState(newState)
     return newState.valid

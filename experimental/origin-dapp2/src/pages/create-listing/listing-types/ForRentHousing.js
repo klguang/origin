@@ -18,7 +18,7 @@ class ForRentHousing extends Component {
   constructor() {
     super()
     this.state = {
-      step: 0,
+      step: 1,
       listing: {
         title: '',
         description: '',
@@ -43,36 +43,63 @@ class ForRentHousing extends Component {
       }
     }
 
-    // this.createSequence = [
-    //   <Details />,
-    //   <Availability/>
-    // ]
   }
 
   setListing(listing, step) {
     store.set('create-listing', listing)
-    this.setState({ listing, step: step })
   }
 
   render() {
     switch (this.state.step) {
       case 0:
         return (
-          <Details
-            listing={this.state.listing}
-            onPrev={
-              <Redirect to={`/`} />
-            }
-            onChange={listing => this.setListing(listing, 1)}
-          />
+          <Redirect to={`/create/new`} />
         )
       case 1:
         return (
+          <Details
+            listing={this.state.listing}
+            steps = {4}
+            step = {2}
+            onPrev={() => this.setState({step: 0})}
+            onNext={() => this.setState({step: 2})}
+            onChange={listing => this.setListing(listing)}
+          />
+        )
+      case 2:
+        return (
           <Availability
             listing={this.state.listing}
+            steps = {4}
+            step = {3}
             tokenBalance={this.props.tokenBalance}
-            onPrev={() => this.setState({step: 0})}
-            onChange={listing => this.setListing(listing, 2)}
+            onPrev={() => this.setState({step: 1})}
+            onNext={() => this.setState({step: 3})}
+            onChange={listing => this.setListing(listing)}
+          />
+        )
+      case 3:
+        return (
+          <Boost
+            listing={this.state.listing}
+            steps = {4}
+            step = {3}
+            tokenBalance={this.props.tokenBalance}
+            onPrev={() => this.setState({step: 2})}
+            onNext={() => this.setState({step: 4})}
+            onChange={listing => this.setListing(listing, 3)}
+          />
+        )
+      case 4:
+        return (
+          <Review
+            listing={this.state.listing}
+            steps = {4}
+            step = {3}
+            tokenBalance={this.props.tokenBalance}
+            onPrev={() => this.setState({step: 3})}
+            onNext={() => this.setState({step: 5})}
+            onChange={listing => this.setListing(listing, 3)}
           />
         )
       default:

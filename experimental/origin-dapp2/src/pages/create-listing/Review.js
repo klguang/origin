@@ -124,9 +124,9 @@ class Review extends Component {
           </div>
 
           <div className="actions">
-            <Link className="btn btn-outline-primary" to={`${prefix}/boost`}>
+            <button className="btn btn-outline-primary" onClick={() => {this.props.onPrev()}} >
               Back
-            </Link>
+            </button>
             {isEdit ? (
               <UpdateListing
                 listing={this.props.listing}
