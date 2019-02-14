@@ -29,6 +29,7 @@ export default function applyListingData(props, data) {
     }
     variables.commission = listing.boostLimit
   }
+  console.log(variables)
 
   return variables
 }

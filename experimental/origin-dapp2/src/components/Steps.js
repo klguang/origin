@@ -1,5 +1,7 @@
 import React from 'react'
 
+/* Shows step progress bars */
+
 const Steps = ({ step, steps = 5 }) => (
   <div className="step-lines">
     {Array.from({ length: steps }, (v, i) => i + 1).map(idx => (

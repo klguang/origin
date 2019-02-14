@@ -61,7 +61,7 @@ class Availability extends Component {
                 <Calendar
                   range={this.state.range}
                   availability={this.state.calculator}
-                  onChange={state => this.setState(state)}
+                  onChange={state => {console.log('yo');console.log(state); this.setState(state)}}
                   showBooked={true}
                 />
 
@@ -208,6 +208,11 @@ class Availability extends Component {
               this.setState({ calculator, range: '' })
 
               const { booked, customPricing, unavailable } = calculator.opts
+
+              console.log(booked)
+              console.log(customPricing)
+              console.log(unavailable)
+
               this.props.onChange({
                 ...this.props.listing,
                 booked,
