@@ -364,12 +364,12 @@ function setMetaMask() {
 }
 
 function setLinkerClient() {
-  const linkingEnabled =
+  context.linkingEnabled =
     (typeof window !== 'undefined' && window.linkingEnabled) ||
     process.env.ORIGIN_LINKING
 
   if (context.metaMaskEnabled) return
-  if (!linkingEnabled) return
+  if (!context.linkingEnabled) return
   if (!context.linker) return
   if (metaMask && metaMaskEnabled) return
 

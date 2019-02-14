@@ -83,7 +83,7 @@ const web3Resolver = {
   },
   walletType: () => {
     if (contracts.metaMaskEnabled) return 'metaMask'
-    if (!contracts.linker) return null
+    if (!contracts.linkingEnabled) return null
     return contracts.linker.session.linked && contracts.linker.session.accounts
       ? 'mobile-linked'
       : 'mobile-unlinked'
