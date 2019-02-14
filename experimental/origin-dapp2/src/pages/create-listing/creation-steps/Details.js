@@ -36,7 +36,7 @@ class Details extends Component {
 
     if (this.state.valid) {
       // Go to next step if we're done
-      return <Redirect to={this.props.nextPath} push />
+      this.props.onNext()
     }
 
     const input = formInput(this.state, state => this.setState(state))

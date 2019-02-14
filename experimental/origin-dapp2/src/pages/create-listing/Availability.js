@@ -66,12 +66,9 @@ class Availability extends Component {
                 />
 
                 <div className="actions">
-                  <Link
-                    className="btn btn-outline-primary"
-                    to={'/create/step-2'}
-                  >
+                  <button className="btn btn-outline-primary" onClick={() => {this.props.onPrev()}}>
                     Back
-                  </Link>
+                  </button>
                   <button type="submit" className="btn btn-primary">
                     Continue
                   </button>
