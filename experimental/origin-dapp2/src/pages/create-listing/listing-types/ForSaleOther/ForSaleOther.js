@@ -11,7 +11,7 @@ import Review from './Review'
 import Store from 'utils/store'
 const store = Store('sessionStorage')
 
-class ForRentHousing extends Component {
+class ForSaleOther extends Component {
 
   constructor() {
     super()
@@ -27,15 +27,15 @@ class ForRentHousing extends Component {
         boostLimit: '100',
         media: [],
 
-        // // Unit fields:
-        // quantity: '1',
-        // price: '',
+        // Unit fields:
+        quantity: '1',
+        price: '',
 
-        // HomeShare fields:
-        weekendPrice: '',
-        booked: [],
-        customPricing: [],
-        unavailable: [],
+        // // HomeShare fields:
+        // weekendPrice: '',
+        // booked: [],
+        // customPricing: [],
+        // unavailable: [],
 
         ...store.get('create-listing', {})
       }
@@ -49,7 +49,7 @@ class ForRentHousing extends Component {
   }
 
   render() {
-    const steps=4
+    const steps=3
     switch (this.state.step) {
       case 0:
         return (
@@ -68,7 +68,7 @@ class ForRentHousing extends Component {
         )
       case 2:
         return (
-          <Availability
+          <Boost
             listing={this.state.listing}
             steps = {steps}
             step = {2}
@@ -80,25 +80,13 @@ class ForRentHousing extends Component {
         )
       case 3:
         return (
-          <Boost
+          <Review
             listing={this.state.listing}
             steps = {steps}
             step = {3}
             tokenBalance={this.props.tokenBalance}
             onPrev={() => this.setState({step: 2})}
             onNext={() => this.setState({step: 4})}
-            onChange={listing => this.setListing(listing)}
-          />
-        )
-      case 4:
-        return (
-          <Review
-            listing={this.state.listing}
-            steps = {steps}
-            step = {4}
-            tokenBalance={this.props.tokenBalance}
-            onPrev={() => this.setState({step: 3})}
-            onNext={() => this.setState({step: 5})}
             onChange={listing => this.setListing(listing)}
           />
         )
@@ -113,7 +101,7 @@ class ForRentHousing extends Component {
     // return (
     //   <Switch>
     //     <Route
-    //       path="/create/ForRentHousing/HouseDetails"
+    //       path="/create/ForSaleOther/HouseDetails"
     //       render={() => (
     //         <Step2
     //           listing={this.state.listing}
@@ -144,7 +132,7 @@ class ForRentHousing extends Component {
     //       )}
     //     />
     //     <Route
-    //       path="/create/ForRentHousing/availability"
+    //       path="/create/ForSaleOther/availability"
     //       render={() => (
     //         <Availability
     //           tokenBalance={this.props.tokenBalance}
@@ -157,7 +145,7 @@ class ForRentHousing extends Component {
     //       render={() => (
     //         <Details
     //           listing={this.state.listing}
-    //           nextPath='/create/ForRentHousing/availability'
+    //           nextPath='/create/ForSaleOther/availability'
     //           onChange={listing => this.setListing(listing)}
     //         />
     //       )}
@@ -167,4 +155,4 @@ class ForRentHousing extends Component {
   }
 }
 
-export default ForRentHousing
+export default ForSaleOther
