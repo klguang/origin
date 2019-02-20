@@ -16,33 +16,8 @@ const store = Store('sessionStorage')
 
 class CreateListing extends Component {
 
-  // TODO: wait...should we even have a listing state here? it should be handled in the listing-type specific component!! e.g. <ForRentHousing/>
   constructor() {
     super()
-    // this.state = {
-    //   listing: {
-    //     title: '',
-    //     description: '',
-    //     category: '',
-    //     subCategory: '',
-    //     location: '',
-    //     boost: '50',
-    //     boostLimit: '100',
-    //     media: [],
-
-    //     // Unit fields:
-    //     quantity: '1',
-    //     price: '',
-
-    //     // HomeShare fields:
-    //     weekendPrice: '',
-    //     booked: [],
-    //     customPricing: [],
-    //     unavailable: [],
-
-    //     ...store.get('create-listing', {})
-    //   }
-    // }
   }
 
   setListing(listing) {

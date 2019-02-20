@@ -15,15 +15,11 @@ import UpdateListing from '../../mutations/UpdateListing'
 class Review extends Component {
   state = {}
   render() {
+
     const isEdit = this.props.mode === 'edit'
     const prefix = isEdit ? `/listings/${this.props.listingId}/edit` : '/create'
 
     const { listing, tokenBalance } = this.props
-    if (!listing.subCategory) {
-      return <Redirect to={`${prefix}/step-1`} />
-    } else if (!listing.title) {
-      return <Redirect to={`${prefix}/step-2`} />
-    }
 
     const quantity = Number(listing.quantity || 0)
     const isMulti = quantity > 1

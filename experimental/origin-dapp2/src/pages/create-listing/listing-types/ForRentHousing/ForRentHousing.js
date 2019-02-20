@@ -36,7 +36,6 @@ class ForRentHousing extends Component {
         ...store.get('create-listing', {})
       }
     }
-
   }
 
   setListing(listing, step) {
@@ -103,63 +102,6 @@ class ForRentHousing extends Component {
           <div>Something went wrong</div>
         )
     }
-
-    // return this.createSequence[this.state.step]
-
-    // return (
-    //   <Switch>
-    //     <Route
-    //       path="/create/ForRentHousing/HouseDetails"
-    //       render={() => (
-    //         <Step2
-    //           listing={this.state.listing}
-    //           listingType={listingType}
-    //           onChange={listing => this.setListing(listing)}
-    //         />
-    //       )}
-    //     />
-    //     <Route
-    //       path="/create/boost"
-    //       render={() => (
-    //         <Boost
-    //           listing={this.state.listing}
-    //           listingType={listingType}
-    //           tokenBalance={this.props.tokenBalance}
-    //           onChange={listing => this.setListing(listing)}
-    //         />
-    //       )}
-    //     />
-    //     <Route
-    //       path="/create/review"
-    //       render={() => (
-    //         <Review
-    //           tokenBalance={this.props.tokenBalance}
-    //           listingType={listingType}
-    //           listing={this.state.listing}
-    //         />
-    //       )}
-    //     />
-    //     <Route
-    //       path="/create/ForRentHousing/availability"
-    //       render={() => (
-    //         <Availability
-    //           tokenBalance={this.props.tokenBalance}
-    //           listing={this.state.listing}
-    //           onChange={listing => this.setListing(listing)}
-    //         />
-    //       )}
-    //     />
-    //     <Route
-    //       render={() => (
-    //         <Details
-    //           listing={this.state.listing}
-    //           nextPath='/create/ForRentHousing/availability'
-    //           onChange={listing => this.setListing(listing)}
-    //         />
-    //       )}
-    //     />
-    //   </Switch>
-    // )
   }
 }
 
