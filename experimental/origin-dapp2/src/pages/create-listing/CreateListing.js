@@ -5,54 +5,53 @@ import withWallet from 'hoc/withWallet'
 
 import PageTitle from 'components/PageTitle'
 
-import ForRentHousing from './listing-types/ForRentHousing'
-// import ForRentJewelry from './listing-types'
+import ForRentHousing from './listing-types/ForRentHousing/ForRentHousing'
+import ForSaleOther from './listing-types/ForSaleOther/ForSaleOther'
+import ForSaleBicycles from './listing-types/ForSaleBicycles/ForSaleBicycles'
 
-import Step1 from './Step1'
-// import Step2 from './Step2'
-// import Boost from './Boost'
-// import Availability from './Availability'
-// import Review from './Review'
+import ChooseListingType from './ChooseListingType'
 
 import Store from 'utils/store'
 const store = Store('sessionStorage')
 
 class CreateListing extends Component {
+
+  // TODO: wait...should we even have a listing state here? it should be handled in the listing-type specific component!! e.g. <ForRentHousing/>
   constructor() {
     super()
-    this.state = {
-      listing: {
-        title: '',
-        description: '',
-        category: '',
-        subCategory: '',
-        location: '',
-        boost: '50',
-        boostLimit: '100',
-        media: [],
+    // this.state = {
+    //   listing: {
+    //     title: '',
+    //     description: '',
+    //     category: '',
+    //     subCategory: '',
+    //     location: '',
+    //     boost: '50',
+    //     boostLimit: '100',
+    //     media: [],
 
-        // Unit fields:
-        quantity: '1',
-        price: '',
+    //     // Unit fields:
+    //     quantity: '1',
+    //     price: '',
 
-        // HomeShare fields:
-        weekendPrice: '',
-        booked: [],
-        customPricing: [],
-        unavailable: [],
+    //     // HomeShare fields:
+    //     weekendPrice: '',
+    //     booked: [],
+    //     customPricing: [],
+    //     unavailable: [],
 
-        ...store.get('create-listing', {})
-      }
-    }
+    //     ...store.get('create-listing', {})
+    //   }
+    // }
   }
 
   setListing(listing) {
+    debugger;
     store.set('create-listing', listing)
     this.setState({ listing })
   }
 
   render() {
-    console.log(`listingType is ${this.props.match.params.listingType}`)
     let listingType = this.props.match.params.listingType
 
     // const { category, subCategory } = this.state.listing
@@ -64,30 +63,34 @@ class CreateListing extends Component {
     //   listingType = 'fractional'
     // }
 
-    if (listingType.toLowerCase()=='forrenthousing') {
-      console.log(`ForRentHousing it is`)
-      return (
-        <div className="container create-listing">
-          <PageTitle>Add a Listing</PageTitle>
-          <ForRentHousing />
-        </div>
-      )
+    const listingTypeMapping = {
+      'forrenthousing' : ForRentHousing,
+      'forsaleother' : ForSaleOther,
+      'forsalebicycles' : ForSaleBicycles
+    }
+    if (listingType.toLowerCase()!='new') {
+      if (listingType.toLowerCase() in listingTypeMapping) {
+        const ListingTypeComponent = listingTypeMapping[listingType.toLowerCase()]
+        return (
+          <div className="container create-listing">
+            <PageTitle>{listingType}</PageTitle>
+            <ListingTypeComponent />
+          </div>
+        )
+      }
+      else {
+        return (
+          <div className="container create-listing">
+            <div>Unkown listing type of "<code>{listingType}</code>". Something went wrong.</div>
+          </div>
+        )
+      }
     }
     else if (listingType.toLowerCase()=='new') {
       return (
         <div className="container create-listing">
           <PageTitle>Add a Listing</PageTitle>
-            <Step1
-              listing={this.state.listing}
-              onChange={listing => {console.log(listing); this.setListing(listing)}}
-            />
-        </div>
-      )
-    }
-    else {
-      return (
-        <div className="container create-listing">
-          <div>Unkown listing type of "<code>{listingType}</code>". Something went wrong :(</div>
+            <ChooseListingType />
         </div>
       )
     }

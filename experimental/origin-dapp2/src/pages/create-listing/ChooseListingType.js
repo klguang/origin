@@ -11,7 +11,10 @@ import { formInput, formFeedback } from 'utils/formHelpers'
 class ChooseListingType extends Component {
   constructor(props) {
     super(props)
-    this.state = { ...props.listing, fields: Object.keys(props.listing) }
+    this.state = {
+      valid: false
+    }
+
   }
 
   render() {
@@ -19,17 +22,17 @@ class ChooseListingType extends Component {
     if (this.state.valid) {
 
       // TODO: This is HACK to get a new ListingType from old-school category+subcategory.
-      // It strips off lieading "schema"
-      // E.g. 'schema.forRent' + 'schema.housing' --> 'forRenthousing'
+      // It strips off lieading "schema" and capitalizes subcategory
+      // E.g. 'schema.forRent' + 'schema.housing' --> 'forRentHousing'
       const listingType = (
         this.state.category.slice("schema".length+1) +
-        this.state.subCategory.slice("schema".length+1)
+        this.state.subCategory.charAt("schema".length+1).toUpperCase() +
+        this.state.subCategory.slice("schema".length+2)
       )
 
       return (
         <Redirect to={listingType} push />
       )
-
 
       // TODO: Get editing working again!
 
@@ -76,7 +79,11 @@ class ChooseListingType extends Component {
       <div className="row">
         <div className="col-md-8">
           <div className="create-listing-step-1">
-            {isEdit ? (
+            {
+
+//TODO: (Stan) would we ever change the listingType as part of an edit? That seems absurtd.
+
+              isEdit ? (
               <h2>Let’s update your listing</h2>
             ) : (
               <h2>Hi there! Let’s get started creating your listing</h2>
@@ -129,8 +136,6 @@ class ChooseListingType extends Component {
 
     if (!newState.valid) {
       window.scrollTo(0, 0)
-    } else if (this.props.onChange) {
-      this.props.onChange(pick(this.state, this.state.fields))
     }
     this.setState(newState)
     return newState.valid

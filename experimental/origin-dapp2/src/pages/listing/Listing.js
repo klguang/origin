@@ -8,7 +8,7 @@ import PageTitle from 'components/PageTitle'
 
 import query from 'queries/Listing'
 import ListingDetail from './ListingDetail'
-import EditListing from './Edit'
+// import EditListing from './Edit'
 import Onboard from '../onboard/Onboard'
 
 class Listing extends Component {
@@ -45,12 +45,14 @@ class Listing extends Component {
                     <Onboard listing={listing} quantity={this.state.quantity} />
                   )}
                 />
+                {/*
                 <Route
                   path="/listings/:listingID/edit"
                   render={() => (
                     <EditListing listing={listing} refetch={refetch} />
                   )}
                 />
+                */}
                 <Route
                   render={() => (
                     <ListingDetail

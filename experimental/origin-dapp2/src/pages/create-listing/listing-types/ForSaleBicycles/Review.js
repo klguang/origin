@@ -24,6 +24,9 @@ class Review extends Component {
     } else if (!listing.title) {
       return <Redirect to={`${prefix}/step-2`} />
     }
+
+    const quantity = Number(listing.quantity || 0)
+    const isMulti = quantity > 1
     const boost = tokenBalance >= Number(listing.boost) ? listing.boost : '0'
 
     return (
@@ -55,13 +58,35 @@ class Review extends Component {
                 </div>
               </div>
             </div>
+            {quantity <= 1 ? null : (
+              <div className="row">
+                <div className="col-3 label">Quantity</div>
+                <div className="col-9">{listing.quantity}</div>
+              </div>
+            )}
+            <div className="row">
+              <div className="col-3 label">Frame Size</div>
+              <div className="col-9">{listing.frameSize}</div>
+            </div>
+            <div className="row">
+              <div className="col-3 label">Wheel Size</div>
+              <div className="col-9">{listing.wheelSize}</div>
+            </div>
             <div className="row">
               <div className="col-3 label">Boost Level</div>
               <div className="col-9">
                 <CoinPrice price={boost} coin="ogn" />
-                {' / night'}
+                {isMulti ? ' / unit' : ''}
               </div>
             </div>
+            {!isMulti ? null : (
+              <div className="row">
+                <div className="col-3 label">Boost Cap</div>
+                <div className="col-9">
+                  <CoinPrice price={listing.boostLimit} coin="ogn" />
+                </div>
+              </div>
+            )}
             <div className="row">
               <div className="col-3 label">Photos</div>
               <div className="col-9">
@@ -78,24 +103,6 @@ class Review extends Component {
                 ) : (
                   <i>No Photos</i>
                 )}
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-3 label">Availability</div>
-              <div className="col-9">
-                <Calendar
-                  interactive={false}
-                  small={true}
-                  availability={
-                    new AvailabilityCalculator({
-                      weekdayPrice: listing.price,
-                      weekendPrice: listing.weekendPrice,
-                      booked: listing.booked,
-                      unavailable: listing.unavailable,
-                      customPricing: listing.customPricing
-                    })
-                  }
-                />
               </div>
             </div>
           </div>

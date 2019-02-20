@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import pick from 'lodash/pick'
 
-import Steps from 'components/Steps'
-import Redirect from 'components/Redirect'
-import Link from 'components/Link'
-import Wallet from 'components/Wallet'
-import ImagePicker from 'components/ImagePicker'
-import HomeShareListing from '../listing-types/HomeShare'
-import Price from 'components/Price'
+import Steps from '../../../../components/Steps'
+import Redirect from '../../../../components/Redirect'
+import Link from '../../../../components/Link'
+import Wallet from '../../../../components/Wallet'
+import ImagePicker from '../../../../components/ImagePicker'
+import Price from '../../../../components/Price'
+import { formInput, formFeedback } from '../../../../utils/formHelpers'
 
-import { formInput, formFeedback } from 'utils/formHelpers'
+import HomeShareListing from '../HomeShare'
 
 class Details extends Component {
   constructor(props) {
@@ -32,14 +32,9 @@ class Details extends Component {
         ? `/listings/${this.props.listingId}/edit`
         : '/create'
 
-
-    // if (this.state.valid) {
-    //   // Go to next step if we're done
-    //   this.props.onNext()
-    // }
-
     const input = formInput(this.state, state => this.setState(state))
     const Feedback = formFeedback(this.state)
+    const isMulti = Number(this.state.quantity || 0) > 1
 
     return (
       <div className="row">
@@ -90,11 +85,30 @@ class Details extends Component {
                 />
 */}
 
+{/* bicycles specific code */}
 
-{/* homeshare specific code */}
 
                 <div className="form-group">
-                  <label>Default Weekday Pricing (Sunday - Thursday nights)</label>
+                  <label>Frame Size</label>
+                  <input {...input('frameSize')} placeholder="What is the frame size, in inches?" />
+                  {Feedback('frameSize')}
+                </div>
+                <div className="form-group">
+                  <label>Wheel Size</label>
+                  <input {...input('wheelSize')} placeholder="What is the wheel size? E.g. 700cc, 26 inch, 29 inch" />
+                  {Feedback('wheelSize')}
+                </div>
+
+{/* unit specific code */}
+
+
+                <div className="form-group">
+                  <label>Quantity</label>
+                  <input {...input('quantity')} placeholder="How many are you selling?" />
+                  {Feedback('quantity')}
+                </div>
+                <div className="form-group">
+                  <label>{`Price${isMulti ? ' (per unit)' : ''}`}</label>
                   <div className="d-flex">
                     <div style={{ flex: 1, marginRight: '1rem' }}>
                       <div className="with-symbol">
@@ -115,36 +129,12 @@ class Details extends Component {
                   </div>
                   {Feedback('price')}
                   <div className="help-text price">
-                    Price is always in ETH, USD is an estimate.
+                    The cost to buy this listing. Price is always in ETH, USD is an
+                    estimate.
                   </div>
                 </div>
-                <div className="form-group">
-                  <label>Default Weekend Pricing (Friday &amp; Saturday nights)</label>
-                  <div className="d-flex">
-                    <div style={{ flex: 1, marginRight: '1rem' }}>
-                      <div className="with-symbol">
-                        <input {...input('weekendPrice')} />
-                        <span className="eth">ETH</span>
-                      </div>
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <div className="with-symbol corner">
-                        <Price
-                          el="input"
-                          amount={this.state.weekendPrice}
-                          className="form-control form-control-lg"
-                        />
-                        <span className="usd">USD</span>
-                      </div>
-                    </div>
-                  </div>
-                  {Feedback('weekendPrice')}
-                </div>
 
-
-{/* END homeshare specific code */}
-
-
+{/* END unit specific code */}
 
                 <div className="form-group">
                   <label>Add Photos</label>

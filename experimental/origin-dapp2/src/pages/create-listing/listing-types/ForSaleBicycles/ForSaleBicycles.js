@@ -10,7 +10,7 @@ import Review from './Review'
 import Store from 'utils/store'
 const store = Store('sessionStorage')
 
-class ForSaleOther extends Component {
+class ForSaleBicycles extends Component {
 
   constructor() {
     super()
@@ -30,9 +30,14 @@ class ForSaleOther extends Component {
         quantity: '1',
         price: '',
 
+        // Bicycles fields:
+        frameSize: '',
+        wheelSize: '',
+
         ...store.get('create-listing', {})
       }
     }
+
   }
 
   setListing(listing, step) {
@@ -90,4 +95,4 @@ class ForSaleOther extends Component {
   }
 }
 
-export default ForSaleOther
+export default ForSaleBicycles

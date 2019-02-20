@@ -56,7 +56,7 @@ class Nav extends Component {
                 </li>
                 <Sell {...navProps('sell')} />
                 <li className="nav-item extra-margin d-none d-md-flex">
-                  <NavLink to="/create" className="nav-link add-listing text">
+                  <NavLink to="/create/new" className="nav-link add-listing text">
                     <fbt desc="navbar.addListing">Add Listing</fbt>
                   </NavLink>
                 </li>

@@ -27,10 +27,6 @@ class ForRentHousing extends Component {
         boostLimit: '100',
         media: [],
 
-        // // Unit fields:
-        // quantity: '1',
-        // price: '',
-
         // HomeShare fields:
         weekendPrice: '',
         booked: [],

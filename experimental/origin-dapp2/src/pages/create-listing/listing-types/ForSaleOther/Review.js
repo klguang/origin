@@ -27,7 +27,6 @@ class Review extends Component {
 
     const quantity = Number(listing.quantity || 0)
     const isMulti = quantity > 1
-    const isFractional = this.props.listingType === 'fractional'
     const boost = tokenBalance >= Number(listing.boost) ? listing.boost : '0'
 
     return (
@@ -50,17 +49,15 @@ class Review extends Component {
               <div className="col-3 label">Description</div>
               <div className="col-9">{listing.description}</div>
             </div>
-            {isFractional ? null : (
-              <div className="row">
-                <div className="col-3 label">Listing Price</div>
-                <div className="col-9">
-                  <CoinPrice price={listing.price} coin="eth" />
-                  <div className="fiat">
-                    ~ <Price amount={listing.price} />
-                  </div>
+            <div className="row">
+              <div className="col-3 label">Listing Price</div>
+              <div className="col-9">
+                <CoinPrice price={listing.price} coin="eth" />
+                <div className="fiat">
+                  ~ <Price amount={listing.price} />
                 </div>
               </div>
-            )}
+            </div>
             {quantity <= 1 ? null : (
               <div className="row">
                 <div className="col-3 label">Quantity</div>
@@ -72,10 +69,9 @@ class Review extends Component {
               <div className="col-9">
                 <CoinPrice price={boost} coin="ogn" />
                 {isMulti ? ' / unit' : ''}
-                {isFractional ? ' / night' : ''}
               </div>
             </div>
-            {!isMulti && !isFractional ? null : (
+            {!isMulti ? null : (
               <div className="row">
                 <div className="col-3 label">Boost Cap</div>
                 <div className="col-9">
@@ -101,26 +97,6 @@ class Review extends Component {
                 )}
               </div>
             </div>
-            {!isFractional ? null : (
-              <div className="row">
-                <div className="col-3 label">Availability</div>
-                <div className="col-9">
-                  <Calendar
-                    interactive={false}
-                    small={true}
-                    availability={
-                      new AvailabilityCalculator({
-                        weekdayPrice: listing.price,
-                        weekendPrice: listing.weekendPrice,
-                        booked: listing.booked,
-                        unavailable: listing.unavailable,
-                        customPricing: listing.customPricing
-                      })
-                    }
-                  />
-                </div>
-              </div>
-            )}
           </div>
 
           <div className="actions">
