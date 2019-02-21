@@ -9,8 +9,6 @@ import ImagePicker from '../../../../components/ImagePicker'
 import Price from '../../../../components/Price'
 import { formInput, formFeedback } from '../../../../utils/formHelpers'
 
-import HomeShareListing from '../HomeShare'
-
 class Details extends Component {
   constructor(props) {
     super(props)

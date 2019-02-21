@@ -29,15 +29,6 @@ class CreateListing extends Component {
   render() {
     let listingType = this.props.match.params.listingType
 
-    // const { category, subCategory } = this.state.listing
-    // let listingType = 'unit'
-    // if (category === 'schema.forRent' && subCategory === 'schema.housing') {
-    //   listingType = 'fractional'
-    // }
-    // if (category === 'schema.forRent' && subCategory === 'schema.jewelry') {
-    //   listingType = 'fractional'
-    // }
-
     const listingTypeMapping = {
       'forrenthousing' : ForRentHousing,
       'forsaleother' : ForSaleOther,
