@@ -6,6 +6,7 @@ import withWallet from 'hoc/withWallet'
 import PageTitle from 'components/PageTitle'
 
 import ForRentHousing from './listing-types/ForRentHousing/ForRentHousing'
+import ForRentJewelry from './listing-types/ForRentJewelry/ForRentJewelry'
 import ForSaleOther from './listing-types/ForSaleOther/ForSaleOther'
 import ForSaleBicycles from './listing-types/ForSaleBicycles/ForSaleBicycles'
 
@@ -31,6 +32,7 @@ class CreateListing extends Component {
 
     const listingTypeMapping = {
       'forrenthousing' : ForRentHousing,
+      'forrentjewelry' : ForRentJewelry,
       'forsaleother' : ForSaleOther,
       'forsalebicycles' : ForSaleBicycles
     }
