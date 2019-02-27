@@ -28,8 +28,7 @@ class Calendar extends Component {
       // startOfMonth = new Date(year, month),
       // date = dayjs(startOfMonth),
       isBeginning = weekStartDate.isBefore(dayjs()), // Is it before now?
-      firstDay = weekStartDate,
-      lastDay = weekStartDate.add(1, 'week').date() + firstDay, //date.endOf('month').date() + firstDay,
+      lastDay = weekStartDate.add(1, 'week'),
       hours = []
       // dayAvailability = this.props.availability.getAvailability(
       //   weekStartDate.format('YYYY/MM/DD'),
@@ -48,11 +47,6 @@ class Calendar extends Component {
           booked: false
         })
       }
-      // if (i < lastDay && firstDay <= i) {
-      //   days.push(dayAvailability[currentDay++])
-      // } else {
-      //   days.push(null)
-      // }
     }
 
     return (
@@ -68,31 +62,40 @@ class Calendar extends Component {
               if (isBeginning) {
                 return
               }
-              if (month === 0) {
-                this.setState({ month: 11, year: year - 1, ...resetDrag })
-              } else {
-                this.setState({ month: month - 1, ...resetDrag })
-              }
+              this.setState({ weekStartDate: weekStartDate.add(-1, 'week'), ...resetDrag })
+              // if (month === 0) {
+              //   this.setState({ month: 11, year: year - 1, ...resetDrag })
+              // } else {
+              //   this.setState({ month: month - 1, ...resetDrag })
+              // }
             }}
           />
-          {weekStartDate.format('[YYYY] YYYY-MM-DDTHH:mm:ssZ[Z]')}
+          {weekStartDate.format('MMM ')}
+          {lastDay.month() != weekStartDate.month() ? lastDay.format('- MMM ') : ''}
+          {weekStartDate.format('YYYY')}
+        {/* TODO: indicate if it crosses into other month. e.g. "March-April 2019" */}
           <button
             type="button"
             className="btn btn-outline-secondary next"
             onClick={() => {
-              if (month === 11) {
-                this.setState({ month: 0, year: year + 1, ...resetDrag })
-              } else {
-                this.setState({ month: this.state.month + 1, ...resetDrag })
-              }
+              this.setState({ weekStartDate: weekStartDate.add(+1, 'week'), ...resetDrag })
+
+              // if (month === 11) {
+              //   this.setState({ month: 0, year: year + 1, ...resetDrag })
+              // } else {
+              //   this.setState({ month: this.state.month + 1, ...resetDrag })
+              // }
             }}
           />
 
         </div>
 
         <div className="day-header">
-          {'SMTWTFS'.split('').map((day, k) => (
-            <div key={k}>{day}</div>
+          {[...Array(7)].map((_, k) => (
+            <div key={k}>
+              <div className="day-column-name">{weekStartDate.add(k, 'day').format('ddd')}</div>
+              <div className="day-column-number">{weekStartDate.add(k, 'day').format('D')}</div>
+            </div>
           ))}
         </div>
 
@@ -319,8 +322,12 @@ require('react-styl')(`
       line-height: 2rem;
       > div
         flex: 1
+        .day-column-name
+          text-transform: uppercase
+        .day-column-number
+          font-size: 24px
 
-    .month-chooser
+    .week-chooser
       display: flex
       justify-content: space-between;
       font-family: Poppins
