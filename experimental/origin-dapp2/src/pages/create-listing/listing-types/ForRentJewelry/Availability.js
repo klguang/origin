@@ -98,19 +98,23 @@ class Availability extends Component {
     const input = formInput(this.state, state => this.setState(state))
     const Feedback = formFeedback(this.state)
 
-    const [startRaw, endRaw] = this.state.range.split('-')
-    const start = startRaw.replace(/\//g, '-'),
-      end = endRaw.replace(/\//g, '-')
+    // ISO 8601 Intervals
+    // https://en.wikipedia.org/wiki/ISO_8601#Time_intervals
+    const [start, end] = this.state.range.split('/'),
+      [startDate, startTime] = start.split('T'),
+      [endDate, endTime] = end.split('T')
 
     return (
       <div className="availability-editor">
         <div className="form-group">
-          <label>Start Date</label>
-          <input className="form-control" type="date" value={start} readOnly />
+          <label>Start</label>
+          <input className="form-control" type="date" value={startDate} readOnly />
+          <input className="form-control" type="time" value={startTime} readOnly />
         </div>
         <div className="form-group">
-          <label>End Date</label>
-          <input className="form-control" type="date" value={end} readOnly />
+          <label>End</label>
+          <input className="form-control" type="date" value={endDate} readOnly />
+          <input className="form-control" type="time" value={endTime} readOnly />
         </div>
         {/* <div className="form-group">
           <label>Availability</label>

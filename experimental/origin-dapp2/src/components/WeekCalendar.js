@@ -7,7 +7,7 @@ const resetDrag = {
   dragging: false
 }
 
-class Calendar extends Component {
+class WeekCalendar extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -15,12 +15,18 @@ class Calendar extends Component {
       //month: dayjs().month()
       weekStartDate: dayjs().startOf('week')
     }
+    this.scrollComponentRef = React.createRef()
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.range && !this.props.range) {
       this.setState({ ...resetDrag })
     }
+  }
+
+  componentDidMount() {
+    const slotHeight = 50 // TODO: Read height px dynamically from DOM
+    this.scrollComponentRef.current.scrollTop = dayjs().hour() * slotHeight
   }
 
   render() {
@@ -73,7 +79,6 @@ class Calendar extends Component {
           {weekStartDate.format('MMM ')}
           {lastDay.month() != weekStartDate.month() ? lastDay.format('- MMM ') : ''}
           {weekStartDate.format('YYYY')}
-        {/* TODO: indicate if it crosses into other month. e.g. "March-April 2019" */}
           <button
             type="button"
             className="btn btn-outline-secondary next"
@@ -99,7 +104,7 @@ class Calendar extends Component {
           ))}
         </div>
 
-        <div className={`days${this.state.dragging ? '' : ' inactive'}`}>
+        <div className={`slots${this.state.dragging ? '' : ' inactive'}`} ref={this.scrollComponentRef}>
           {Array(7*24)
             .fill(0)
             .map((v, idx) => this.renderHour(hours, idx))}
@@ -123,16 +128,16 @@ class Calendar extends Component {
 
 // Hour in past
 
-    // if (date.add(1, 'day').isBefore(dayjs())) {
-    //   return (
-    //     <div
-    //       key={idx}
-    //       className={`day in-past${idx % 7 === 6 ? ' end-row' : ''}`}
-    //     >
-    //       <div>{date.date()}</div>
-    //     </div>
-    //   )
-    // }
+    if (hour.hour.isBefore(dayjs())) {
+      return (
+        <div
+          key={idx}
+          className={`day in-past${idx % 7 === 6 ? ' end-row' : ''}`}
+        >
+          <div>{hour.hour.format('MM-DD HH')}</div>
+        </div>
+      )
+    }
 
     let content = `${hour.price} ETH`
     if (hour.booked && this.props.showBooked) {
@@ -159,11 +164,20 @@ class Calendar extends Component {
           this.setState({ dragEnd: idx, dragging: false, endDate: hour.hour })
           if (this.props.onChange) {
             const start = dayjs(this.state.startDate)
-            let range = `${this.state.startDate}-${hour.hour}`
-            if (start.isAfter(hour.hour)) {
-              range = `${hour.hour}-${this.state.startDate}`
-            }
+
+            // TODO: Handle if "enddate" is before startdate
+
+            // ISO 8601 Interval format
+            // e.g. "2019-03-01T01:00:00/2019-03-01T03:00:00"
+            let range = (dayjs(this.state.startDate).format('YYYY-MM-DDTHH:mm:ss') + '/' +
+              hour.hour.format('YYYY-MM-DDTHH:mm:ss'))
+
+            // let range = `${this.state.startDate}-${hour.hour}`
+            // if (start.isAfter(hour.hour)) {
+            //   range = `${hour.hour}-${this.state.startDate}`
+            // }
             this.props.onChange({ range })
+            // this.props.onChange({range:'2019/02/27-2019/02/28'})
           }
         },
         onMouseOver: () => this.setState({ dragOver: idx })
@@ -210,7 +224,7 @@ class Calendar extends Component {
     // }
 
 
-  // TODO: this seems to be based on days of weeK??
+  // TODO: (STAN) this seems to be based on days of weeK?? Ask Nick
 
     if (!unselected && idx + 7 >= start && idx + 7 <= end) {
       cls += ' nbb'
@@ -226,14 +240,16 @@ class Calendar extends Component {
   }
 }
 
-export default Calendar
+export default WeekCalendar
 
 require('react-styl')(`
   .weekCalendar
     margin-bottom: 2rem
     &.calendar-sm .days > .day
       height: auto
-    .days
+    .slots
+      height: 500px
+      overflow-y: scroll
       display: grid
       grid-template-columns: repeat(7, 1fr);
       grid-template-rows: repeat(24, 1fr);
@@ -242,7 +258,7 @@ require('react-styl')(`
       > .empty.first-row
         border-bottom: 1px solid #c2cbd3
       > .hour
-        height: 6vw
+        height: 50px
         min-height: 3.5rem
         color: #455d75
         font-size: 14px

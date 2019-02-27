@@ -213,8 +213,6 @@ require('react-styl')(`
     .days
       display: grid
       grid-template-columns: repeat(7, 1fr);
-      grid-template-rows: repeat(7, 1fr);
-      grid-auto-flow: column;
       user-select: none
       > .empty.first-row
         border-bottom: 1px solid #c2cbd3
