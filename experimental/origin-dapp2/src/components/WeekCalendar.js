@@ -30,7 +30,6 @@ class Calendar extends Component {
       isBeginning = weekStartDate.isBefore(dayjs()), // Is it before now?
       firstDay = weekStartDate,
       lastDay = weekStartDate.add(1, 'week').date() + firstDay, //date.endOf('month').date() + firstDay,
-      max = 7 * 24, // lastDay <= 35 ? 35 : 42,
       hours = []
       // dayAvailability = this.props.availability.getAvailability(
       //   weekStartDate.format('YYYY/MM/DD'),
@@ -38,16 +37,26 @@ class Calendar extends Component {
       // )
 
     let currentHour = 0
-    for (let i = 0; i <= max; i++) {
-      if (i < lastDay && firstDay <= i) {
-        days.push(dayAvailability[currentDay++])
-      } else {
-        days.push(null)
+    for (let i = 0; i < 7; i++) { // Days
+      for (let j = 0; j < 24; j++) { // Hours
+        // hours.push(null)
+        hours.push({
+          hour: weekStartDate.add(i*24+j, 'hour'),
+          price: i*24+j,
+          unavailable: false,
+          customPrice: null,
+          booked: false
+        })
       }
+      // if (i < lastDay && firstDay <= i) {
+      //   days.push(dayAvailability[currentDay++])
+      // } else {
+      //   days.push(null)
+      // }
     }
 
     return (
-      <div className={`calendar${this.props.small ? ' calendar-sm' : ''}`}>
+      <div className={`weekCalendar${this.props.small ? ' calendar-sm' : ''}`}>
         <div className="week-chooser">
 
           <button
@@ -80,6 +89,7 @@ class Calendar extends Component {
           />
 
         </div>
+
         <div className="day-header">
           {'SMTWTFS'.split('').map((day, k) => (
             <div key={k}>{day}</div>
@@ -87,17 +97,17 @@ class Calendar extends Component {
         </div>
 
         <div className={`days${this.state.dragging ? '' : ' inactive'}`}>
-          {Array(max)
+          {Array(7*24)
             .fill(0)
-            .map((v, idx) => this.renderDay(days, idx, lastDay))}
+            .map((v, idx) => this.renderHour(hours, idx))}
         </div>
       </div>
     )
   }
 
-  renderDay(days, idx, lastDay) {
-    const day = days[idx]
-    if (!day) {
+  renderHour(hours, idx) {
+    const hour = hours[idx]
+    if (!hour) {
       return (
         <div
           key={idx}
@@ -106,25 +116,27 @@ class Calendar extends Component {
       )
     }
 
-    const date = dayjs(day.date)
+    const date = dayjs(hour.hour)
 
-    if (date.add(1, 'day').isBefore(dayjs())) {
-      return (
-        <div
-          key={idx}
-          className={`day in-past${idx % 7 === 6 ? ' end-row' : ''}`}
-        >
-          <div>{date.date()}</div>
-        </div>
-      )
-    }
+// Hour in past
 
-    let content = `${day.price} ETH`
-    if (day.booked && this.props.showBooked) {
+    // if (date.add(1, 'day').isBefore(dayjs())) {
+    //   return (
+    //     <div
+    //       key={idx}
+    //       className={`day in-past${idx % 7 === 6 ? ' end-row' : ''}`}
+    //     >
+    //       <div>{date.date()}</div>
+    //     </div>
+    //   )
+    // }
+
+    let content = `${hour.price} ETH`
+    if (hour.booked && this.props.showBooked) {
       content = 'Booked'
-    } else if (day.unavailable) {
+    } else if (hour.unavailable) {
       content = 'Unavailable'
-    } else if (day.customPrice) {
+    } else if (hour.customPrice) {
       content = <span style={{ color: 'green' }}>{content}</span>
     }
 
@@ -135,18 +147,18 @@ class Calendar extends Component {
           this.setState({
             dragging: true,
             dragStart: idx,
-            startDate: day.date,
+            startDate: hour.hour,
             dragEnd: null,
             endDate: null
           })
         },
         onMouseUp: () => {
-          this.setState({ dragEnd: idx, dragging: false, endDate: day.date })
+          this.setState({ dragEnd: idx, dragging: false, endDate: hour.hour })
           if (this.props.onChange) {
             const start = dayjs(this.state.startDate)
-            let range = `${this.state.startDate}-${day.date}`
-            if (start.isAfter(day.date)) {
-              range = `${day.date}-${this.state.startDate}`
+            let range = `${this.state.startDate}-${hour.hour}`
+            if (start.isAfter(hour.hour)) {
+              range = `${hour.hour}-${this.state.startDate}`
             }
             this.props.onChange({ range })
           }
@@ -158,16 +170,18 @@ class Calendar extends Component {
     return (
       <div
         key={idx}
-        className={`day ${this.getClass(idx, lastDay, day)}`}
+        className={`hour ${this.getClass(idx, hour)}`}
         {...interactions}
       >
-        <div>{date.date()}</div>
+        {/*<div>{date.hour()}</div>*/}
+        <div>{date.format('MM-DD HH')}</div>
         <div>{content}</div>
       </div>
     )
   }
 
-  getClass(idx, lastDay, day) {
+  // Get class for this hour, determining if e.g. it is selected
+  getClass(idx, hour) {
     const initStart = this.state.dragStart,
       initEnd = this.state.dragging ? this.state.dragOver : this.state.dragEnd,
       start = initStart < initEnd ? initStart : initEnd,
@@ -177,27 +191,31 @@ class Calendar extends Component {
       unselected = false
 
     if (idx === start && idx === end) {
-      cls += ' single'
+      cls += ' single' // Single cell selected
     } else if (idx === start) {
-      cls += ' start'
+      cls += ' start' // Start of selection
     } else if (idx === end) {
-      cls += ' end'
+      cls += ' end' // End of selection
     } else if (idx > start && idx < end) {
-      cls += ' mid'
+      cls += ' mid' // Mid part of selection
     } else {
       cls += ' unselected'
       unselected = true
     }
-    if (idx % 7 === 6 || idx === lastDay - 1) {
-      cls += ' end-row'
-    }
+    // if (idx % 7 === 6 || idx === lastDay - 1) {
+    //   cls += ' end-row'
+    // }
+
+
+  // TODO: this seems to be based on days of weeK??
+
     if (!unselected && idx + 7 >= start && idx + 7 <= end) {
       cls += ' nbb'
     }
     if (!unselected && idx - 7 >= start && idx - 7 <= end) {
       cls += ' nbt'
     }
-    if (day.unavailable || day.booked) {
+    if (hour.unavailable || hour.booked) {
       cls += ' unavailable'
     }
 
@@ -208,17 +226,19 @@ class Calendar extends Component {
 export default Calendar
 
 require('react-styl')(`
-  .calendar
+  .weekCalendar
     margin-bottom: 2rem
     &.calendar-sm .days > .day
       height: auto
     .days
       display: grid
       grid-template-columns: repeat(7, 1fr);
+      grid-template-rows: repeat(24, 1fr);
+      grid-auto-flow: column;
       user-select: none
       > .empty.first-row
         border-bottom: 1px solid #c2cbd3
-      > .day
+      > .hour
         height: 6vw
         min-height: 3.5rem
         color: #455d75
@@ -264,13 +284,13 @@ require('react-styl')(`
         &.start,&.mid,&.end
           background-color: var(--pale-clear-blue)
         &.start::after
-          border-width: 3px 0 3px 3px
+          border-width: 3px 3px 0 3px
           border-color: black
         &.mid::after
-          border-width: 3px 0 3px 0
+          border-width: 0 3px 0px 3px
           border-color: black
         &.end::after
-          border-width: 3px 3px 3px 0
+          border-width: 0 3px 3px 3px
           border-color: black
         &.single::after
           border-width: 3px

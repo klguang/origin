@@ -3,7 +3,7 @@ import AvailabilityCalculator from 'origin-graphql/src/utils/AvailabilityCalcula
 
 import Steps from '../../../../components/Steps'
 import Link from '../../../../components/Link'
-import Calendar from '../../../../components/Calendar'
+import WeekCalendar from '../../../../components/WeekCalendar'
 import Price from '../../../../components/Price'
 import Redirect from '../../../../components/Redirect'
 
@@ -58,10 +58,10 @@ class Availability extends Component {
                   </div>
                 )}
 
-                <Calendar
+                <WeekCalendar
                   range={this.state.range}
                   availability={this.state.calculator}
-                  onChange={state => {console.log('yo');console.log(state); this.setState(state)}}
+                  onChange={state => {console.log('debugging here...');console.log(state); this.setState(state)}}
                   showBooked={true}
                 />
 
