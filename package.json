@@ -2,7 +2,8 @@
   "name": "root",
   "private": true,
   "dependencies": {
-    "lerna": "^3.5.1"
+    "lerna": "^3.5.1",
+    "yarn": "^1.13.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
@@ -19,23 +20,50 @@
     "eslint-plugin-standard": "^4.0.0",
     "husky": "^1.3.1",
     "mocha": "^5.2.0",
-    "prettier": "^1.16.3"
+    "prettier": "^1.16.3",
+    "use-yarn": "^2.2.0"
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap --no-ci --progress --hoist \"**\" --ignore origin-mobile",
-    "bootstrap:mobile": "lerna bootstrap --progress",
-    "build": "lerna run build",
+    "build": "yarn run build",
     "clean": "git clean -fdX .",
     "start": "lerna run start --stream --parallel --scope origin --scope origin-dapp",
     "lint": "lerna run lint",
+    "preinstall": "npx use-yarn",
     "format": "eslint **/**/*.js --quiet --fix",
-    "postinstall": "npm run bootstrap && node scripts/symlink-packages.js",
-    "install:mobile": "npm install --ignore-scripts && npm run bootstrap:mobile",
     "test": "node scripts/test.js"
   },
   "husky": {
     "hooks": {
-      "pre-push": "lerna run lint"
+      "pre-push": "yarn run lint"
     }
+  },
+  "workspaces": {
+    "packages": [
+      "experimental/*",
+      "origin-contracts",
+      "origin-bridge",
+      "origin-dapp",
+      "origin-dapp-creator-client",
+      "origin-dapp-creator-server",
+      "origin-discovery",
+      "origin-faucet",
+      "origin-growth",
+      "origin-identity",
+      "origin-ipfs-proxy",
+      "origin-js",
+      "origin-linking",
+      "origin-messaging",
+      "origin-mobile",
+      "origin-notifications",
+      "origin-tests",
+      "origin-token",
+      "origin-token-transfer-client",
+      "origin-token-transfer-server"
+    ],
+    "nohoist": [
+      "react-native",
+      "react-native/**",
+      "openzeppelin-solidity"
+    ]
   }
 }
