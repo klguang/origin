@@ -30,5 +30,7 @@
     "origin-token-transfer-server",
     "origin-validator"
   ],
+  "npmClient": "yarn",
+  "useWorkspaces": true,
   "version": "independent"
 }

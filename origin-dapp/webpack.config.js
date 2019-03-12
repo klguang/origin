@@ -87,7 +87,11 @@ const config = {
   },
   resolve: {
     extensions: ['.js', '.json'],
-    modules: [path.resolve(__dirname, 'src/constants'), './node_modules']
+    modules: [path.resolve(__dirname, 'src/constants'), './node_modules'],
+    alias: {
+      // https://github.com/facebook/react/issues/13991
+      react: path.resolve('./node_modules/react')
+    }
   },
   node: {
     fs: 'empty'
@@ -100,11 +104,6 @@ const config = {
   },
   watchOptions: {
     poll: 2000,
-    ignored: [
-      // Ignore node_modules in watch except for the origin-js directory
-      /node_modules([\\]+|\/)+(?!origin)/,
-      /\origin([\\]+|\/)node_modules/ // eslint-disable-line no-useless-escape
-    ]
   },
   mode: isProduction ? 'production' : 'development',
   plugins: [
@@ -124,20 +123,7 @@ const config = {
       GIT_BRANCH: gitBranch,
       BUILD_TIMESTAMP: +new Date()
     })
-  ],
-
-  optimization: {
-    // splitChunks: {
-    //   cacheGroups: {
-    //     app: {
-    //       chunks: 'all',
-    //       name: 'app',
-    //       enforce: true,
-    //       reuseExistingChunk: true,
-    //     }
-    //   }
-    // },
-  }
+  ]
 }
 
 if (isProduction) {
@@ -181,19 +167,6 @@ if (isProduction) {
     'react-styl': 'react-styl/prod.js'
   }
   config.module.noParse = [/^(react-styl)$/]
-  // config.resolve.alias = {
-  //   react: 'react/umd/react.production.min.js',
-  //   'react-dom': 'react-dom/umd/react-dom.production.min.js',
-  //   'react-styl': 'react-styl/prod.js',
-  //   web3: path.resolve(__dirname, 'public/web3.min'),
-  //   redux: 'redux/dist/redux.min.js',
-  //   'react-redux': 'react-redux/dist/react-redux.min.js',
-  //   'react-router-dom': 'react-router-dom/umd/react-router-dom.min.js'
-  // }
-  // config.module.noParse = [
-  //   /^(react|react-dom|react-styl|redux|react-redux|react-router-dom)$/,
-  //   /web3/
-  // ]
 }
 
 module.exports = config

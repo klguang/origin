@@ -23,8 +23,9 @@
     "prettier": "^1.16.3"
   },
   "scripts": {
+    "bootstrap": "lerna bootstrap",
     "clean": "git clean -fdX .",
-    "start": "lerna run start --scope origin-dapp",
+    "start": "lerna run start --scope origin-dapp --stream",
     "lint": "lerna run lint",
     "preinstall": "npx use-yarn",
     "test": "lerna run test"
