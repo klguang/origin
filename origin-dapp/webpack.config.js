@@ -103,7 +103,7 @@ const config = {
     }
   },
   watchOptions: {
-    poll: 2000,
+    poll: 2000
   },
   mode: isProduction ? 'production' : 'development',
   plugins: [
