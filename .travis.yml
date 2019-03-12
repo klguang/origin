@@ -10,17 +10,18 @@ matrix:
         - npm install --ignore-scripts
         - npm run bootstrap -- --scope origin-contracts --scope origin-eventsource --scope origin-ipfs --scope origin-messaging-client --scope origin-services --scope origin-validator --scope origin-linker-client --scope origin-graphql
       script:
-        - npm run test --prefix experimental/origin-graphql
+        - npm run test --prefix origin-graphql
 
     # Run integration tests using docker compose
-    - name: "integration tests"
-      language: minimal
-      sudo: true
-      before_script:
-        # Setting required for Elasticsearch to run
-        - sudo sysctl -w vm.max_map_count=262144
-      script:
-        - docker-compose -f docker-compose.yml -f docker-compose.test.yml up --exit-code-from origin-tests
+    # - name: "integration tests"
+    #   language: minimal
+    #   sudo: true
+    #   before_script:
+    #     # Setting required for Elasticsearch to run
+    #     - sudo sysctl -w vm.max_map_count=262144
+    #   script:
+    #     - docker-compose build
+    #    - docker-compose -f docker-compose.yml -f docker-compose.test.yml up --exit-code-from origin-tests
 
     - name: "javascript linting"
       language: node_js

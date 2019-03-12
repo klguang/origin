@@ -2,14 +2,18 @@
  * Implementation of the Origin Growth GraphQL server.
  * Uses the Apollo framework: https://www.apollographql.com/server
  */
+const logger = require('../logger')
 require('dotenv').config()
 
-const { getUserAuthenticationStatus } = require('../resources/authentication')
+const {
+  getUserAuthenticationStatus,
+  getUser
+} = require('../resources/authentication')
 
 try {
   require('envkey')
 } catch (error) {
-  console.log('EnvKey not configured')
+  logger.log('EnvKey not configured')
 }
 
 const { ApolloServer } = require('apollo-server-express')
@@ -44,6 +48,8 @@ const server = new ApolloServer({
   context: async context => {
     let countryCode = null
     const headers = context.req.headers
+
+    logger.debug('Received request headers: ', JSON.stringify(headers))
     /* TODO: this needs to be tested on production that google rightly sets X-AppEngine-Country
      */
     if (headers) {
@@ -51,13 +57,19 @@ const server = new ApolloServer({
     }
 
     let authStatus = enums.GrowthParticipantAuthenticationStatus.NotEnrolled
-    let authToken
+    let authToken, walletAddress
     if (headers.authentication) {
       try {
         authToken = JSON.parse(headers.authentication).growth_auth_token
         authStatus = await getUserAuthenticationStatus(authToken)
+
+        walletAddress = (await getUser(authToken)).ethAddress
       } catch (e) {
-        console.error('Error authenticating user: ', e)
+        logger.error(
+          'Authentication header present but unable to authenticate user ',
+          e.message,
+          e.stack
+        )
       }
     }
 
@@ -65,6 +77,7 @@ const server = new ApolloServer({
       ...context,
       countryCode,
       authToken,
+      walletAddress,
       authentication: authStatus
     }
   }
@@ -75,7 +88,7 @@ server.applyMiddleware({ app })
 const port = process.env.PORT || 4001
 
 app.listen({ port: port }, () =>
-  console.log(
+  logger.info(
     `Apollo server ready at http://localhost:${port}${server.graphqlPath}`
   )
 )

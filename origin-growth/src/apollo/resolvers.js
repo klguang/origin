@@ -6,10 +6,10 @@ const {
   authenticateEnrollment,
   getUserAuthenticationStatus
 } = require('../resources/authentication')
-const { getLocationInfo } = require('../util/locationInfo')
+//const { getLocationInfo } = require('../util/locationInfo')
 const { campaignToApolloObject } = require('./adapter')
 const { GrowthInvite } = require('../resources/invite')
-const { sendInviteEmails } = require('../resources/email')
+const { sendInvites } = require('../resources/email')
 const enums = require('../enums')
 const logger = require('../logger')
 
@@ -26,7 +26,7 @@ const requireEnrolledUser = context => {
 const resolvers = {
   /* TODO:
    * Use this pagination helpers when implementing pagination:
-   * https://github.com/OriginProtocol/origin/blob/master/experimental/origin-graphql/src/resolvers/_pagination.js
+   * https://github.com/OriginProtocol/origin/blob/master/origin-graphql/src/resolvers/_pagination.js
    */
   //JSON: GraphQLJSON,
   DateTime: GraphQLDateTime,
@@ -41,13 +41,17 @@ const resolvers = {
   },
   Query: {
     async campaigns(_, args, context) {
-      requireEnrolledUser(context)
       const campaigns = await GrowthCampaign.getAll()
+
       return {
         totalCount: campaigns.length,
         nodes: campaigns.map(
           async campaign =>
-            await campaignToApolloObject(campaign, args.walletAddress)
+            await campaignToApolloObject(
+              campaign,
+              context.authentication,
+              context.walletAddress
+            )
         ),
         pageInfo: {
           endCursor: 'TODO implement',
@@ -58,46 +62,57 @@ const resolvers = {
       }
     },
     async campaign(root, args, context) {
-      requireEnrolledUser(context)
-
       const campaign = await GrowthCampaign.get(args.id)
-      return await campaignToApolloObject(campaign, args.walletAddress)
+      return await campaignToApolloObject(
+        campaign,
+        context.authentication,
+        context.walletAddress
+      )
     },
-    async inviteInfo(root, args, context) {
-      requireEnrolledUser(context)
+    async inviteInfo(root, args) {
       return await GrowthInvite.getReferrerInfo(args.code)
     },
-    async isEligible(obj, args, context) {
-      if (process.env.NODE_ENV !== 'production') {
-        return {
-          eligibility: 'Eligible',
-          countryName: 'N/A',
-          countryCode: 'N/A'
-        }
-      }
-
-      const locationInfo = getLocationInfo(context.countryCode)
-      logger.debug('Location info received:', JSON.stringify(locationInfo))
-
-      if (!locationInfo) {
-        return {
-          eligibility: 'Unknown',
-          countryName: 'N/A',
-          countryCode: 'N/A'
-        }
-      }
-      let eligibility = 'Eligible'
-      if (locationInfo.isForbidden) {
-        eligibility = 'Forbidden'
-      } else if (locationInfo.isRestricted) {
-        eligibility = 'Restricted'
-      }
-
+    async inviteCode(root, args, context) {
+      requireEnrolledUser(context)
+      return GrowthInvite.getInviteCode(context.walletAddress)
+    },
+    //async isEligible(obj, args, context) {
+    async isEligible() {
       return {
-        eligibility: eligibility,
-        countryName: locationInfo.countryName,
-        countryCode: locationInfo.countryCode
+        eligibility: 'Eligible',
+        countryName: 'N/A',
+        countryCode: 'N/A'
       }
+      //if (process.env.NODE_ENV !== 'production') {
+      //   return {
+      //     eligibility: 'Eligible',
+      //     countryName: 'N/A',
+      //     countryCode: 'N/A'
+      //   }
+      // }
+
+      // const locationInfo = getLocationInfo(context.countryCode)
+      // logger.debug('Location info received:', JSON.stringify(locationInfo))
+
+      // if (!locationInfo) {
+      //   return {
+      //     eligibility: 'Unknown',
+      //     countryName: 'N/A',
+      //     countryCode: 'N/A'
+      //   }
+      // }
+      // let eligibility = 'Eligible'
+      // if (locationInfo.isForbidden) {
+      //   eligibility = 'Forbidden'
+      // } else if (locationInfo.isRestricted) {
+      //   eligibility = 'Restricted'
+      // }
+
+      // return {
+      //   eligibility: eligibility,
+      //   countryName: locationInfo.countryName,
+      //   countryCode: locationInfo.countryCode
+      // }
     },
     async enrollmentStatus(_, args, context) {
       return await getUserAuthenticationStatus(
@@ -112,9 +127,8 @@ const resolvers = {
       requireEnrolledUser(context)
 
       logger.info('invite mutation called.')
-      // FIXME:
-      //  b. Implement rate limiting to avoid spam attack.
-      await sendInviteEmails(args.walletAddress, args.emails)
+      // FIXME: implement rate limiting to avoid spam attack.
+      await sendInvites(context.walletAddress, args.emails)
       return true
     },
     async enroll(_, args) {
@@ -127,6 +141,7 @@ const resolvers = {
           )
         }
       } catch (e) {
+        logger.warn('Authenticating user failed: ', e.message, e.stack)
         return {
           error: 'Can not authenticate user'
         }

@@ -281,9 +281,10 @@ class BaseRule {
     }
     if (
       this.config.nextLevelCondition === true &&
-      (!this.config.conditionTranslateKey || !this.config.conditionIcon)
+      (!this.config.unlockConditionMsg ||
+        this.config.unlockConditionMsg.length === 0)
     ) {
-      throw new Error('Missing translation key and icon.')
+      throw new Error('Missing unlock condition configuration.')
     }
     this.limit = this.config.limit
     if (this.limit > maxNumRewardsPerRule) {
@@ -554,7 +555,7 @@ class ReferralRule extends BaseRule {
    * @private
    */
   async _getReferees(referrer) {
-    const invites = await db.GrowthInvite.findAll({
+    const invites = await db.GrowthReferral.findAll({
       where: {
         referrerEthAddress: referrer,
         createdAt: { [Sequelize.Op.lte]: this.campaign.endDate }
