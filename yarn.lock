@@ -12083,16 +12083,6 @@ inquirer@^6.1.0, inquirer@^6.2.0, inquirer@^6.2.2:
     strip-ansi "^5.0.0"
     through "^2.3.6"
 
-install-local@^0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/install-local/-/install-local-0.6.2.tgz#027a6c412e05a437beca52e0231c23d04f8a5611"
-  integrity sha512-jjBHRVO+Yu0mzJZeQ2w5/cvoekmD7T4TN5oB/pVSP8WfbG0rUKOGUdntQcJKuScqdnSgR26IjvZDLkCQJZlU7g==
-  dependencies:
-    lodash "^4.17.10"
-    mz "^2.7.0"
-    rimraf "^2.6.2"
-    uniqid "^5.0.3"
-
 interface-connection@^0.3.2, interface-connection@~0.3.2, interface-connection@~0.3.3:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/interface-connection/-/interface-connection-0.3.3.tgz#d82dd81efee5f2d40d7cb0fd75e6e858f92fa199"
@@ -17236,7 +17226,7 @@ myetherwallet-blockies@^0.1.1:
   resolved "https://registry.yarnpkg.com/myetherwallet-blockies/-/myetherwallet-blockies-0.1.1.tgz#60f89d8151291046440683ab7d63e940cfe36db7"
   integrity sha512-2UPR88/+L7rTVLqTM1Fu3Er9+m6XLMGaanP5wyq5+dGyv9TFbB5ohXRJA0jeYf+30gtlOlhlvzAWtwB6BiHWxQ==
 
-mz@^2.6.0, mz@^2.7.0:
+mz@^2.6.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/mz/-/mz-2.7.0.tgz#95008057a56cafadc2bc63dde7f9ff6955948e32"
   integrity sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==
@@ -20773,10 +20763,10 @@ react-moment@^0.7.5:
   resolved "https://registry.yarnpkg.com/react-moment/-/react-moment-0.7.9.tgz#fc6b5bf8952d27f134a42abfd7f42df2c839c1d7"
   integrity sha512-JpHQgpB+p3oqZv583xlJakPXgqdIjGBZvngHYcFhlYxTYs0NDZSdoM1FCpU9T2QmqKOEFBVuhhJBMvJzTkF/wQ==
 
-react-native-camera@^1.11.2:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-1.12.0.tgz#64cfb95fe4ad00f4fc4d94281bb3c913025964ca"
-  integrity sha512-b9dk4QrP7lGrkUvURiX3cCW9f/oDbhFuZP72YJKwYBe10o0TbSpAGErFbRgOoGarW4KupzSsHNun1istMuCMvg==
+react-native-camera@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-2.0.0.tgz#6cd4ac447737c0b94b244baea07853b38a096a91"
+  integrity sha512-dLJQ1cEyMtRykXgQ7+hYwhcPGRMqTDJYPmA/6eCudYKnJRwXt1FyeOkO19gYQk1HaZZeKSyr9sN/ktIx8oN/CA==
   dependencies:
     prop-types "^15.6.2"
 
@@ -24716,11 +24706,6 @@ uniq@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/uniq/-/uniq-1.0.1.tgz#b31c5ae8254844a3a8281541ce2b04b865a734ff"
   integrity sha1-sxxa6CVIRKOoKBVBzisEuGWnNP8=
-
-uniqid@^5.0.3:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/uniqid/-/uniqid-5.0.3.tgz#917968310edc868d50df6c44f783f32c7d80fac1"
-  integrity sha512-R2qx3X/LYWSdGRaluio4dYrPXAJACTqyUjuyXHoJLBUOIfmMcnYOyY2d6Y4clZcIz5lK6ZaI0Zzmm0cPfsIqzQ==
 
 uniqs@^2.0.0:
   version "2.0.0"

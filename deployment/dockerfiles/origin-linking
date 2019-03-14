@@ -19,13 +19,11 @@ COPY ./origin-linking ./origin-linking
 COPY ./origin-contracts ./origin-contracts
 COPY ./scripts ./scripts
 
-RUN npm install --unsafe-perm
+RUN yarn install
 
 COPY ./origin-contracts/releases/0.8.6/build/ ./origin-contracts/build/
 
-RUN npm run build --prefix origin-js
-RUN npm run build --prefix origin-linking
+RUN cd origin-js; yarn run build
+RUN cd origin-linking; yarn run build
 
-CMD eval $(envkey-source) && \
-	npm run migrate --prefix origin-linking && \
-	npm run start --prefix origin-linking
+CMD eval $(envkey-source) && cd origin-linking; yarn run migrate && yarn start

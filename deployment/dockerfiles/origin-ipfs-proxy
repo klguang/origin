@@ -6,7 +6,6 @@ ENV NODE_ENV production
 
 COPY ./origin-ipfs-proxy /app
 
-# Install dependencies
-RUN npm install --loglevel notice
+RUN yarn install
 
 CMD npm start

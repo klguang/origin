@@ -11,9 +11,8 @@ COPY ./origin-token ./origin-token
 COPY ./origin-token-transfer-server ./origin-token-transfer-server
 COPY ./scripts ./scripts
 
-RUN npm install --unsafe-perm
+RUN yarn install
 
 COPY ./origin-contracts/releases/0.8.6/build/ ./origin-contracts/build/
 
-CMD npm run migrate --prefix origin-token-transfer-server && \
-	npm run start --prefix origin-token-transfer-server
+CMD cd origin-token-transfer-server; yarn run migrate && yarn start

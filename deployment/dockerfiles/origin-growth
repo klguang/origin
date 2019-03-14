@@ -25,9 +25,8 @@ COPY ./origin-identity ./origin-identity
 COPY ./origin-token ./origin-token
 COPY ./scripts ./scripts
 
-RUN npm install --unsafe-perm
+RUN yarn install
 
 # Run migrations then start the growth server.
 CMD eval $(envkey-source) && \
-	npm run migrate --prefix origin-growth && \
-	npm run start --prefix origin-growth
+	cd origin-growth; yarn run migrate && yarn run start

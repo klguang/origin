@@ -16,13 +16,13 @@ Origin uses a monorepo setup that is managed by `lerna`. The `--hoist` flag of `
 
 ```
 git clone https://github.com/OriginProtocol/origin
-cd origin && npm install
+cd origin && yarn install
 ```
 
 2. You can then start the DApp using:
 
 ```
-cd origin-dapp && npm start
+cd origin-dapp && yarn start
 ```
 
 This will start a `webpack-dev-server` with hot reloading on `http://localhost:3000.`. When you open it you should see the message `No marketplace contract?`.
@@ -32,7 +32,7 @@ This will start a `webpack-dev-server` with hot reloading on `http://localhost:3
 By default the DApp will start its own Ethereum blockchain using Ganache. Because it is a fresh network you'll need to deploy some contracts and create some sample listings using the `origin-admin` tool. This can be done by running:
 
 ```
-cd origin-admin && npm start
+cd origin-admin && yarn start
 ```
 
 Then open your browser to `http://localhost:3001` and:
@@ -150,11 +150,11 @@ Rebuild containers (takes some time), in case you update dependencies (including
 
 ### Suggested workflow
 
-Switching between branches or developing on a fresh branch can cause the dependencies in one of the `package.json` files to change. The host `node_modules` directories are not mounted inside the Docker container. For that reason installing dependencies needs to be done inside the containers. One solution is to rebuild the image with `docker-compose build` but that can be time consuming. To install new dependencies get a shell in the container and run `npm install`.
+Switching between branches or developing on a fresh branch can cause the dependencies in one of the `package.json` files to change. The host `node_modules` directories are not mounted inside the Docker container. For that reason installing dependencies needs to be done inside the containers. One solution is to rebuild the image with `docker-compose build` but that can be time consuming. To install new dependencies get a shell in the container and run `yarn install`.
 
 ```
 host-machine$ docker exec -ti <container_name> /bin/bash
-docker-container$ npm run bootstrap # run inside /app directory
+docker-container$ yarn install # run inside /app directory
 # close connection
 host-machine$ docker-compose restart <container_name>
 ```

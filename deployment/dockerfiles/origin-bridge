@@ -12,8 +12,6 @@ RUN mv envkey-source /usr/local/bin
 
 COPY ./origin-bridge /app
 
-RUN npm install --loglevel notice
+RUN yarn install
 
-CMD eval $(envkey-source) && \
-	npm run migrate && \
-	npm run start
+CMD eval $(envkey-source) && yarn run migrate && yarn start

@@ -29,10 +29,10 @@ COPY ./origin-contracts ./origin-contracts
 COPY ./origin-dapp-creator-client ./origin-dapp-creator-client
 COPY ./scripts ./scripts
 
-RUN npm install --unsafe-perm
+RUN yarn install
 
 # Use EnvKey so that environment variables are available to webpack at build time
-RUN eval $(envkey-source) && npm run build --prefix origin-dapp-creator-client
+RUN eval $(envkey-source) && cd origin-dapp-creator-client; yarn run build
 
 # Copy built static files to nginx for serving
 FROM nginx:1.15.2-alpine

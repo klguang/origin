@@ -16,11 +16,10 @@ We recommend [running Origin Box](https://github.com/OriginProtocol/origin/blob/
 
 If you're interested in running just the notifications service (and the event listener) without messaging, attestations, etc, here are some suggestions for making that happen:
 
-
-In origin-notifications...
+In origin-notifications:
 
   - Install and run [PostgreSQL](https://www.postgresql.org/)
-  - Run `npm install web-push -g`
+  - Run `yarn global add web-push`
   - Run `web-push generate-vapid-keys`
   - Add database url, email address, public and private keys to origin-notifications/.env
   ```
@@ -30,20 +29,21 @@ In origin-notifications...
   VAPID_PUBLIC_KEY=XXXXXXXXXX-your-public-key-XXXXXXXXXX
   ```
   - Run `createdb notification`
-  - Run `npm install -g sequelize-cli`
+  - Run `yarn global add sequelize-cli`
   - Run `sequelize db:migrate`
   - Run `npm run start:development`
 
-In origin-dapp...
+In origin-dapp:
 
   - Add public key and notifications url to origin-dapp/.env
   ```
   NOTIFICATIONS_KEY=XXXXXXXXXX-your-public-key-XXXXXXXXXX
   NOTIFICATIONS_URL=http://localhost:3456/
   ```
-  - Run `npm start`
-  
-In origin-discovery...
+  - Run `yarn start`
+
+In origin-discovery:
+
   - Add variables to origin-discovery/.env
   ```
   AFFILIATE_ACCOUNT=0x821aea9a577a9b44299b9c15c88cf3087f3b5544
@@ -55,9 +55,9 @@ In origin-discovery...
   WEB3_URL=http://localhost:8545/
   ```
   - Run `node src/listener/listener.js --continue-file=continue --webhook=http://localhost:3456/events`
-  
+
   (From time to time, you may need to `rm continue` in origin-discovery.)
-  
+
 To test in the DApp...
 
 1. Create a listing

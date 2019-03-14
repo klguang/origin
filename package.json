@@ -27,6 +27,7 @@
     "clean": "git clean -fdX .",
     "start": "lerna run start --scope origin-dapp --stream",
     "lint": "lerna run lint",
+    "postinstall": "node scripts/symlink-packages.js",
     "preinstall": "npx use-yarn",
     "test": "lerna run test"
   },
@@ -68,8 +69,10 @@
       "origin-validator"
     ],
     "nohoist": [
-      "react-native",
-      "react-native/**",
+      "**/react-native",
+      "**/react-native/**",
+      "origin-mobile/react-native-*",
+      "origin-mobile/react-native-*/**",
       "openzeppelin-solidity"
     ]
   }

@@ -35,7 +35,7 @@ COPY ./origin-contracts ./origin-contracts
 COPY ./origin-js ./origin-js
 
 # Running of postinstall script requires --unsafe-perm
-RUN npm install --unsafe-perm
+RUN yarn install
 
 # Build origin-js for event-listener
 RUN npm run build --prefix origin-js

@@ -22,7 +22,7 @@ Install the following:
 
 - [Watchman](https://facebook.github.io/watchman/): `brew install watchman`
 
-- [React Native CLI](https://facebook.github.io/react-native/docs/understanding-cli): `npm install -g react-native-cli`
+- [React Native CLI](https://facebook.github.io/react-native/docs/understanding-cli): `yarn global add react-native-cli`
 
 - [Redis](https://redis.io/): `brew install redis`
 
@@ -166,15 +166,15 @@ If you want to test with mobile Safari on the same device as the application, fi
 - Start PostgreSQL
 - Start Redis: `redis-server`
 - `createdb origin`
-- origin $ `npm run install:mobile` 👈 instead of `npm install` at the Origin monorepo root
-- origin/origin-linking $ `npm run migrate`
+- origin $ `yarn install` at the monorepo root
+- origin/origin-linking $ `yarn run migrate`
 
 #### Startup
-- origin/origin-js $ `npm run build:watch` (compiles `dist` directory with build)
-- origin/origin-linking $ `npm run start`
-- origin/origin-dapp $ `ORIGIN_LINKING=1 LINKER_HOST=(your_ip_address) npm run start`
-- origin/origin-mobile $ `npm run install-local`
-- origin/origin-mobile $ `npm run start -- --reset-cache`
+- origin/origin-js $ `yarn run build:watch` (compiles `dist` directory with build)
+- origin/origin-linking $ `yarn run start`
+- origin/origin-dapp $ `ORIGIN_LINKING=1 LINKER_HOST=(your_ip_address) yarn run start`
+- origin/origin-mobile $ `yarn run install-local`
+- origin/origin-mobile $ `yarn run start -- --reset-cache`
 - Open Xcode and build for your desired device
 
 ### Android Device Configuration
@@ -194,7 +194,7 @@ If you intend to develop using a physical device rather than a VM, make sure you
 
 To run the mobile app on your phone, you need to both start the Metro builder service, and launch the app on your device.
 
-- Run Metro builder with `npm run start`
+- Run Metro builder with `yarn run start`
 - Compile and build your app with `react-native run-android` or `react-native run-ios`
 
 ### Tips
@@ -215,7 +215,7 @@ You can do this from the developer menu, or by running this in your terminal: `a
 
 > Linker command failed with exit code…
 
-- origin/origin-mobile $ `npm run ios`
+- origin/origin-mobile $ `yarn run ios`
 - Close simulator
 - In Xcode, Project > Clean Build Folder
 - Try again
@@ -224,7 +224,7 @@ You can do this from the developer menu, or by running this in your terminal: `a
 
 > error: bundling failed: Error: Unable to resolve module origin/common/enums...
 
-This can be caused by not running `npm run install-local` or not _rerunning_ it after doing a root-level `npm install` (which deletes various things from origin/origin-mobile/node_modules).
+This can be caused by not running `yarn run install-local` or not _rerunning_ it after doing a root-level `yarn install` (which deletes various things from origin/origin-mobile/node_modules).
 
 -----------
 
@@ -246,7 +246,7 @@ This is likely a network error because your tunnels are not setup.  See [Android
 
 Add the `NODE_OPTIONS` env var to your Metro builder startup command to add the `--max_old_space_size` option like this:
 
-    NODE_OPTIONS="--max_old_space_size=8196" npm run start
+    NODE_OPTIONS="--max_old_space_size=8196" yarn run start
 
 -----------
 

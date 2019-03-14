@@ -31,6 +31,6 @@ RUN npm install --unsafe-perm
 COPY ./origin-contracts/releases/0.8.6/build/ ./origin-contracts/build/
 
 # Build origin-js so it is available for the discovery server to import.
-RUN npm run build --prefix origin-js
+RUN cd origin-js; yarn run build
 
-CMD npm run start:discovery --prefix origin-discovery
+CMD cd origin-discovery; yarn run start:discovery
