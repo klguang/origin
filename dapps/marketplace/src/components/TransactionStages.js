@@ -45,9 +45,12 @@ const CanceledStages = [
     event: 'createdEvent'
   },
   {
-    title: fbt('Offer Withdrawn', 'TransactionStages.offerWithdrawn'),
-    ifSeller: fbt('Offer Rejected', 'TransactionStages.offerRejected'),
-    event: 'withdrawnEvent'
+    title: fbt('Offer Accepted', 'TransactionStages.offerAccepted'),
+    event: 'acceptedEvent'
+  },
+  {
+    title: fbt('Sale Completed', 'TransactionStages.saleCompleted'),
+    event: 'finalizedEvent'
   }
 ]
 

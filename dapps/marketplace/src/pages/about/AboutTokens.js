@@ -1,5 +1,6 @@
 import React from 'react'
 import { fbt } from 'fbt-runtime'
+
 import DocumentTitle from 'components/DocumentTitle'
 
 const AboutTokens = () => (
@@ -10,6 +11,7 @@ const AboutTokens = () => (
     <h1>
       <fbt desc="abouttokens.title">About Origin Tokens</fbt>
     </h1>
+
     <div className="row">
       <div className="col-md-6">
         <fbt desc="abouttokens.text1">
