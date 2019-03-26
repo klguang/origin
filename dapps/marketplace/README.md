@@ -44,3 +44,17 @@ node scripts/crowdinToFbt.js
 npm run fbt:translate
 node scripts/splitTranslations
 ```
+
+## Testing
+
+To visually look for missed text, you can pass a `doTestMark` param to `crowdinToFbt.js`. This will use English text for all translations, wrapped with visible characters `◀` and `▶` to clearly mark phrases set to be translated.
+
+```
+npm run fbt:manifest
+npm run fbt:collect
+node scripts/fbtToCrowdin.js
+# Do translations here
+node scripts/crowdinToFbt.js doTestMark
+npm run fbt:translate
+node scripts/splitTranslations
+```
